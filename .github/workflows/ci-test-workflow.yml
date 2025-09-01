@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lint-results
-          path: cicd/app/build/reports/lint-results.html
+          path: app/build/reports/lint-results.html
