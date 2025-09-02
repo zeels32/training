@@ -33,21 +33,6 @@ jobs:
       - name: Run android lint check
         run: ./gradlew lintDebug
 
-      - name: Show lint results
-        if: always()
-        run: |
-          echo "## Android Lint Report 🧹" >> $GITHUB_STEP_SUMMARY
-          if [ -f app/build/reports/lint-results-debug.html ]; then
-            echo "Lint report generated at: \`app/build/reports/lint-results-debug.html\`" >> $GITHUB_STEP_SUMMARY
-            # Extract errors/warnings from XML report if you want
-            if [ -f app/build/reports/lint-results-debug.xml ]; then
-              echo "### Issues Found:" >> $GITHUB_STEP_SUMMARY
-              xmllint --xpath "//issue/@message" app/build/reports/lint-results-debug.xml | sed 's/message=/\n- /g' >> $GITHUB_STEP_SUMMARY || true
-            fi
-          else
-            echo "⚠️ No lint report was found." >> $GITHUB_STEP_SUMMARY
-          fi
-
       - name: Display lint results
         run: cat cicd/app/build/reports/lint-results-debug.html
 
