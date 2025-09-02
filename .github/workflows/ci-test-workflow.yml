@@ -24,7 +24,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 'wrapper'
-          cache-enabled: true
 
 #      Uncomment the following lines to enable Gradle caching using actions/cache
 #      - name: Cache Gradle packages
