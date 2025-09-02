@@ -5,14 +5,82 @@ on:
     branches: [ main ]
 
 jobs:
-  android-lint-check:
+  lint-checks-and-upload:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        api-level: [29]
     defaults:
       run:
         working-directory: cicd
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 'wrapper'
+
+#      Uncomment the following lines to enable Gradle caching using actions/cache
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper/
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+
+      - name: Run android lint check
+        run: ./gradlew lintDebug
+
+      - name: Upload lint results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-results
+          path: cicd/app/build/reports/lint-results-debug.html
+
+# ---------------------------- Unit tests ----------------------------
+  unit-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cicd
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 'wrapper'
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+
+# ---------------------------- Instrumentation tests ----------------------------
+  instrumentation-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [ 29 ]
+    defaults:
+      run:
+        working-directory: cicd
+
     steps:
       - name: checkout code
         uses: actions/checkout@v4
@@ -36,29 +104,6 @@ jobs:
             ~/.android/avd/*
             ~/.android/adb*
           key: avd-${{ matrix.api-level }}
-
-#      Uncomment the following lines to enable Gradle caching using actions/cache
-#      - name: Cache Gradle packages
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper/
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-
-      - name: Run android lint check
-        run: ./gradlew lintDebug
-
-      - name: Upload lint results
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-results
-          path: cicd/app/build/reports/lint-results-debug.html
-
-      - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
 
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
