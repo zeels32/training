@@ -33,9 +33,6 @@ jobs:
       - name: Run android lint check
         run: ./gradlew lintDebug
 
-      - name: Display lint results
-        run: cat cicd/app/build/reports/lint-results-debug.html
-
       - name: Upload lint results
         uses: actions/upload-artifact@v4
         with:
