@@ -107,7 +107,7 @@ jobs:
         id: avd-cache
         with:
           path: |
-            ~/.android/avd/test-avd.avd
+            ~/.android/avd/test-avd
             ~/.android/adb*
           key: avd-${{ matrix.api-level }}
 
