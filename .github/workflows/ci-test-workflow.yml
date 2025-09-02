@@ -64,4 +64,6 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
-          script: ./cicd/gradlew connectedCheck
+          script: |
+            cd cicd
+            ./gradlew connectedCheck
