@@ -38,7 +38,7 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > cicd/cdapp.jks
+          echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > cdapp.jks
 
       - name: Build debug apk
         run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=cdapp.jks \
