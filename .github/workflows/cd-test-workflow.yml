@@ -49,24 +49,16 @@ jobs:
     needs: generate-apk-build
     runs-on: ubuntu-latest
     steps:
-      - name: Test secrets
-        env:
-          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        run: |
-          echo ${#EMAIL_USERNAME}
-          echo ${#EMAIL_PASSWORD}
-
       - name: Send debug apk to email
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ EMAIL_USERNAME }}
-          password: ${{ EMAIL_PASSWORD }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
           subject: New Debug APK file
           to: zeel.chetan@anywhere.co
-          from: GitHub Actions <${{ EMAIL_USERNAME }}>
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
             Hi
             This is the new debug APK file generated from the CI/CD workflow using github actions.
