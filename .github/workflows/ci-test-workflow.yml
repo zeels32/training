@@ -1,4 +1,4 @@
-# I have made the separate jobs to run lint checks, unit tests and instrumentation tests just for learning purposes.
+# I'm aware of single job. I have made the separate jobs to run lint checks, unit tests and instrumentation tests just for learning purposes.
 
 
 name: learn-github-actions
@@ -110,7 +110,7 @@ jobs:
         id: avd-cache
         with:
           path: |
-            ~/.android/avd/*
+            ~/.android/avd/test-avd.avd
             ~/.android/adb*
           key: test-avd-api-${{ matrix.api-level }}
 
