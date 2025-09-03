@@ -36,14 +36,21 @@ jobs:
         with:
           gradle-version: 'wrapper'
 
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > cicd/cdapp.jks
+
       - name: Build debug apk
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=cdapp.jks \
+                                        -Pandroid.injected.signing.store.password=${{ secrets.CD_KEYSTORE_PASSWORD }} \
+                                        -Pandroid.injected.signing.key.alias=${{ secrets.CD_KEYSTORE_ALIAS }} \
+                                        -Pandroid.injected.signing.key.password=${{ secrets.CD_KEY_PASSWORD }}
 
       - name: Upload debug apk
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
-          path: cicd/app/build/outputs/apk/debug/*.apk
+          path: cicd/app/build/outputs/apk/release/*.apk
 
   send-apk-to-email:
     needs: generate-apk-build
@@ -69,7 +76,7 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: New Debug APK file
+          subject: New Release APK file
           to: zeel.chetan@anywhere.co
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
