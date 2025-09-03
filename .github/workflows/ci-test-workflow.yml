@@ -120,6 +120,7 @@ jobs:
         with:
           avd-name: test-avd
           api-level: ${{ matrix.api-level }}
+          force-avd-creation: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
@@ -130,6 +131,7 @@ jobs:
           avd-name: test-avd
           api-level: ${{ matrix.api-level }}
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          force-avd-creation: false
           disable-animations: true
           script: cd cicd && ./gradlew connectedCheck
 
