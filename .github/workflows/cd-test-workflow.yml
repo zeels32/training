@@ -49,13 +49,15 @@ jobs:
     needs: generate-apk-build
     runs-on: ubuntu-latest
     steps:
-      - name: Send debug apk to email
+      - name: Test secrets
         env:
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         run: |
           echo ${#EMAIL_USERNAME}
-          echo ${#EMAIL_USERNAME}
+          echo ${#EMAIL_PASSWORD}
+
+      - name: Send debug apk to email
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
