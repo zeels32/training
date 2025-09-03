@@ -37,7 +37,6 @@ jobs:
           gradle-version: 'wrapper'
 
       - name: Decode Keystore
-        working-directory: cicd
         run: |
           echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > app/cdapp.jks
 
