@@ -14,7 +14,7 @@ on:
 
 jobs:
   generate-apk-build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: cicd
@@ -55,7 +55,7 @@ jobs:
 
   send-apk-to-email:
     needs: generate-apk-build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
 
       - name: Get artifact ID
