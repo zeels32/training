@@ -43,10 +43,10 @@ jobs:
       - name: Generate Release Apk
         run: ./gradlew assembleRelease
         env:
-          ANDROID_KEYSTORE: cdapp.jks
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.CD_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.CD_KEYSTORE_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.CD_KEY_PASSWORD }}
+          CD_KEYSTORE_FILE: cdapp.jks
+          CD_KEYSTORE_PASSWORD: ${{ secrets.CD_KEYSTORE_PASSWORD }}
+          CD_KEYSTORE_ALIAS: ${{ secrets.CD_KEYSTORE_ALIAS }}
+          CD_KEY_PASSWORD: ${{ secrets.CD_KEY_PASSWORD }}
 
 #        -Pandroid.injected.signing.store.file=cicd/cdapp.jks -Pandroid.injected.signing.store.password=${{ secrets.CD_KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.CD_KEYSTORE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.CD_KEY_PASSWORD }}
 
