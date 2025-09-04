@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      environment:
+      flavor:
         description: 'Choose the deployment environment'
         required: true
         default: 'staging'
