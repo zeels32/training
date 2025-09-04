@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: New Release APK file
-          to: zeel.chetan@anywhere.co
+          to: zeel.chetan@anywhere.co, piotr.rutka@anywhere.co
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
             Hi
