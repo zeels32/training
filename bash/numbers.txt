@@ -1,0 +1,15 @@
+1
+2
+3
+4
+5
+6
+7
+8
+Basic scripting
+Controlling output with > and >> (including  cat > file and 2> /dev/null)
+
+Passing output to another program with |
+12
+23
+appending
