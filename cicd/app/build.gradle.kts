@@ -21,7 +21,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(System.getenv("CD_KEYSTORE_FILE"))
+            storeFile = file(System.getenv("CD_KEYSTORE_FILE") ?: "cdapp.jks")
             storePassword = System.getenv("CD_KEYSTORE_PASSWORD")
             keyAlias = System.getenv("CD_KEYSTORE_ALIAS")
             keyPassword = System.getenv("CD_KEY_PASSWORD")
