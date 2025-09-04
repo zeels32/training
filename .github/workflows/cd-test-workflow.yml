@@ -1,8 +1,6 @@
 name: CD workflow
 run-name: ${{ github.actor }} is learning CD workflow in Github Actions
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       flavor:
@@ -16,7 +14,7 @@ on:
 
 jobs:
   generate-apk-build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: cicd
@@ -57,7 +55,7 @@ jobs:
 
   send-apk-to-email:
     needs: generate-apk-build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
 
       - name: Get artifact ID
