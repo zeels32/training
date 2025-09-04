@@ -4,16 +4,15 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-#    inputs:
-#      environment:
-#        description: 'Select environment'
-#        required: true
-#        default: 'dev'
-#        type: choice
-#        options:
-#          - dev
-#          - staging
-#          - production
+    inputs:
+      environment:
+        description: 'Choose the deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 jobs:
   generate-apk-build:
@@ -40,8 +39,8 @@ jobs:
         run: |
           echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > app/cdapp.jks
 
-      - name: Generate Release Apk
-        run: ./gradlew assembleRelease
+      - name: Generate ${{ github.event.inputs.flavor }} Release Apk
+        run: ./gradlew assemble${{ github.event.inputs.flavor }}Release
         env:
           CD_KEYSTORE_FILE: cdapp.jks
           CD_KEYSTORE_PASSWORD: ${{ secrets.CD_KEYSTORE_PASSWORD }}
@@ -53,8 +52,8 @@ jobs:
       - name: Upload Release apk
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: cicd/app/build/outputs/apk/release/*.apk
+          name: ${{ github.event.inputs.flavor }}-release-apk
+          path: cicd/app/build/outputs/apk/${{ github.event.inputs.flavor }}/release/app-${{ github.event.inputs.flavor }}-release.apk
 
   send-apk-to-email:
     needs: generate-apk-build
@@ -85,7 +84,7 @@ jobs:
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           body: |
             Hi
-            This is the new debug APK file generated from the CI/CD workflow using github actions.
+            This is the new release APK file generated from the CI/CD workflow using github actions.
             
              👉 You can download it from the GitHub Actions artifacts here:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact.outputs.artifact_id }}
