@@ -15,3 +15,8 @@
 local.properties
 .idea
 /buildSrc/build/
+/buildSrc/build/libs/
+/buildSrc/build/pluginDescriptors/
+/buildSrc/build/resources/
+/buildSrc/build/source-roots/
+/buildSrc/build/tmp/
