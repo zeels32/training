@@ -1,0 +1,88 @@
+name: CD workflow
+run-name: ${{ github.actor }} is learning CD workflow in Github Actions
+on:
+  workflow_dispatch:
+    inputs:
+      flavor:
+        description: 'Choose the deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  generate-apk-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cicd
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 'wrapper'
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.CD_KEYSTORE_FILE }}" | base64 --decode > app/cdapp.jks
+
+      - name: Generate ${{ github.event.inputs.flavor }} Release Apk
+        run: ./gradlew assemble${{ github.event.inputs.flavor }}Release
+        env:
+          CD_KEYSTORE_FILE: cdapp.jks
+          CD_KEYSTORE_PASSWORD: ${{ secrets.CD_KEYSTORE_PASSWORD }}
+          CD_KEYSTORE_ALIAS: ${{ secrets.CD_KEYSTORE_ALIAS }}
+          CD_KEY_PASSWORD: ${{ secrets.CD_KEY_PASSWORD }}
+
+#        -Pandroid.injected.signing.store.file=cicd/cdapp.jks -Pandroid.injected.signing.store.password=${{ secrets.CD_KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.CD_KEYSTORE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.CD_KEY_PASSWORD }}
+
+      - name: Upload Release apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.flavor }}-release-apk
+          path: cicd/app/build/outputs/apk/${{ github.event.inputs.flavor }}/release/app-${{ github.event.inputs.flavor }}-release.apk
+
+  send-apk-to-email:
+    needs: generate-apk-build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get artifact ID
+        id: artifact
+        run: |
+          response=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
+          artifact_id=$(echo $response | jq -r '.artifacts[0].id')
+          echo "artifact_id=$artifact_id" >> $GITHUB_OUTPUT
+
+      - name: Build artifact link
+        run: |
+          echo "Artifact link: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact.outputs.artifact_id }}"
+
+      - name: Send debug apk to email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: New Release APK file
+          to: zeel.chetan@anywhere.co, piotr.rutka@anywhere.co
+          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            Hi
+            This is the new release APK file generated from the CI/CD workflow using github actions.
+            
+             👉 You can download it from the GitHub Actions artifacts here:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact.outputs.artifact_id }}
