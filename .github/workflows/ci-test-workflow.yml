@@ -5,7 +5,7 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on:
   push:
-    branches: [ main ]
+    branches: [ cicd-workflows ]
 
 jobs:
   lint-checks-and-upload:
@@ -28,19 +28,19 @@ jobs:
         with:
           gradle-version: 'wrapper'
 
-#      Uncomment the following lines to enable Gradle caching using actions/cache
-#      - name: Cache Gradle packages
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper/
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
+      #      Uncomment the following lines to enable Gradle caching using actions/cache
+      #      - name: Cache Gradle packages
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: |
+      #            ~/.gradle/caches
+      #            ~/.gradle/wrapper/
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      #          restore-keys: |
+      #            ${{ runner.os }}-gradle-
 
       - name: Run android lint check
-        run: ./gradlew lintDebug
+        run: ./gradlew lintStagingDebug
 
       - name: Upload lint results
         uses: actions/upload-artifact@v4
@@ -48,7 +48,7 @@ jobs:
           name: lint-results
           path: cicd/app/build/reports/lint-results-debug.html
 
-# ---------------------------- Unit tests ----------------------------
+  # ---------------------------- Unit tests ----------------------------
   unit-tests:
     runs-on: ubuntu-latest
     defaults:
@@ -71,10 +71,10 @@ jobs:
           gradle-version: 'wrapper'
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testStagingDebugUnitTest
 
 
-# ---------------------------- Instrumentation tests ----------------------------
+  # ---------------------------- Instrumentation tests ----------------------------
   instrumentation-tests:
     runs-on: ubuntu-latest
     strategy:
