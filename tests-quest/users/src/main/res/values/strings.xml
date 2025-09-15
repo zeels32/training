@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_created">User %1$s %2$s created</string>
+    <string name="user_not_created">Failed to create user %1$s %2$s</string>
+</resources>
