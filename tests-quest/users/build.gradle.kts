@@ -16,6 +16,7 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = Config.javaVersion
@@ -23,6 +24,11 @@ android {
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
+    }
+    packaging {
+        resources {
+            excludes.add("META-INF/*")
+        }
     }
 }
 
@@ -69,7 +75,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(testFixtures(projects.time.api))
     testImplementation(testFixtures(projects.coroutines))
-    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.junit)
     testImplementation(libs.turbine)
@@ -77,6 +83,17 @@ dependencies {
     testImplementation(libs.junit.vintage.engine)
     testImplementation(libs.junit.jupiter.engine)
 
+    androidTestImplementation(libs.kotest.assertions.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(testFixtures(projects.time.api))
+    androidTestImplementation(testFixtures(projects.coroutines))
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.junit4)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(projects.resources.impl)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
