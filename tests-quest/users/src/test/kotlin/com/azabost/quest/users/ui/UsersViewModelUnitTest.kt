@@ -5,8 +5,6 @@ import com.azabost.quest.resources.StringResources
 import com.azabost.quest.users.R
 import com.azabost.quest.users.repository.UsersRepository
 import com.azabost.quest.users.repository.UsersRepositoryImpl
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -20,22 +18,30 @@ class UsersViewModelUnitTest {
 
     @BeforeEach
     fun setUp() {
-        stringResources = mockk()
+        stringResources = object : StringResources {
+            override fun getString(id: Int): String {
+                throw UnsupportedOperationException()
+            }
 
-        // Stub getString for success
-        every { stringResources.getString(R.string.user_created, *anyVararg()) } answers {
-            val args = arg<Array<Any>>(1)
-            val first = args[0] as String
-            val last = args[1] as String
-            "User $first $last created"
-        }
+            override fun getString(id: Int, vararg args: Any): String {
+                when (id) {
+                    R.string.user_created -> {
+                        val first = args[0] as String
+                        val last = args[1] as String
+                        return "User $first $last created"
+                    }
 
-        // Stub getString for failure
-        every { stringResources.getString(R.string.user_not_created, *anyVararg()) } answers {
-            val args = arg<Array<Any>>(1)
-            val first = args[0] as String
-            val last = args[1] as String
-            "Failed to create user $first $last"
+                    R.string.user_not_created -> {
+                        val first = args[0] as String
+                        val last = args[1] as String
+                        return "Failed to create user $first $last"
+                    }
+
+                    else -> {
+                        throw UnsupportedOperationException()
+                    }
+                }
+            }
         }
 
         userRepository = UsersRepositoryImpl()
