@@ -74,6 +74,7 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 
 [plugins]
@@ -87,3 +88,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 testFixtures = { id = "java-test-fixtures" }
 junit5 = { id = "junit5" }
+room = { id = "androidx.room", version.ref = "room" }

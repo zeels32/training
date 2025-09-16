@@ -4,15 +4,12 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import app.cash.turbine.test
 import com.azabost.quest.users.data.dao.UserDao
 import com.azabost.quest.users.data.database.AppDatabase
 import com.azabost.quest.users.data.model.UserJdo
 import com.azabost.quest.users.repository.UsersRepository
 import com.azabost.quest.users.repository.UsersRepositoryImpl
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals

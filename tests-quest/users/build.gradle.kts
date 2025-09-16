@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.junit5)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -29,6 +30,9 @@ android {
         resources {
             excludes.add("META-INF/*")
         }
+    }
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -75,6 +79,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    testImplementation(libs.room.testing)
 
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotlinx.coroutines.test)

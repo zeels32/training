@@ -1,9 +1,9 @@
 package com.azabost.quest.users.di
 
 import android.content.Context
+import androidx.room.Room
 import com.azabost.quest.users.data.dao.UserDao
 import com.azabost.quest.users.data.database.AppDatabase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,10 +15,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
+
     @Provides
     @Singleton
     fun provideAppDatabaseDb(@ApplicationContext context: Context): AppDatabase {
-        return AppDatabase.getDatabase(context)
+        return Room.databaseBuilder(context, AppDatabase::class.java, "app_database.db").build()
     }
 
     @Provides
