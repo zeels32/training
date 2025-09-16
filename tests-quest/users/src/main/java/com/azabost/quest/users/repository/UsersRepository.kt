@@ -1,8 +1,9 @@
 package com.azabost.quest.users.repository
 
-import kotlinx.coroutines.flow.StateFlow
+import com.azabost.quest.users.data.model.UserJdo
+import kotlinx.coroutines.flow.Flow
 
 interface UsersRepository {
-    fun getUsers(): StateFlow<List<User>>
     suspend fun createUser(firstName: String, lastName: String)
+    fun getUsers(): Flow<List<User>>
 }

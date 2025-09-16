@@ -71,6 +71,11 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
 
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(testFixtures(projects.time.api))

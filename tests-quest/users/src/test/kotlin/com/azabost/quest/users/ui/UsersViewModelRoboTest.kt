@@ -4,28 +4,35 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
-import com.azabost.quest.coroutines.MainDispatcherRule
 import com.azabost.quest.resources.AndroidStringResources
-import com.azabost.quest.resources.StringResources
-import com.azabost.quest.users.R
+import com.azabost.quest.users.data.dao.UserDao
+import com.azabost.quest.users.data.model.UserJdo
 import com.azabost.quest.users.repository.UsersRepository
 import com.azabost.quest.users.repository.UsersRepositoryImpl
+import io.mockk.coEvery
+import io.mockk.coJustRun
+import io.mockk.every
+import io.mockk.justRun
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.checkerframework.checker.units.qual.s
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
-@Config(sdk = [34])
 @RunWith(AndroidJUnit4::class)
 class UsersViewModelRoboTest {
 
-
-    private val context: Context = ApplicationProvider.getApplicationContext();
-    private val userRepository: UsersRepository = UsersRepositoryImpl()
+    private val userDao:UserDao = mockk{
+        coJustRun {
+            insertUser(any<UserJdo>())
+        }
+        coEvery {
+            getAllUsers()
+        } returns flowOf(emptyList())
+    }
+    private val context: Context = ApplicationProvider.getApplicationContext()
+    private val userRepository: UsersRepository = UsersRepositoryImpl(userDao)
     private val stringResources = AndroidStringResources(context)
     private val viewModel: UsersViewModel = UsersViewModel(
         usersRepository = userRepository,

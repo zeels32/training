@@ -51,7 +51,7 @@ class UsersActivity : ComponentActivity() {
 
         setContent {
             QuestTheme {
-                val users = viewModel.users.collectAsState()
+                val users = viewModel.users.collectAsState(initial = emptyList())
 
                 UsersScreen(
                     users = users.value,

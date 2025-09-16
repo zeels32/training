@@ -19,10 +19,12 @@ junit4 = "4.13.2"
 junit5 = "5.13.4"
 mockk = "1.14.5"
 turbine = "1.2.1"
-robolectric = "4.12.2"
+robolectric = "4.16"
 coreKtxVersion = "1.7.0"
 androidx-test-core = "1.7.0"
 androidx-test-runner = "1.7.0"
+room = "2.8.0"
+
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -69,6 +71,9 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidx-test-core" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 
 [plugins]
