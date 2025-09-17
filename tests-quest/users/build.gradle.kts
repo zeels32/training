@@ -34,6 +34,9 @@ android {
     room {
         schemaDirectory("$projectDir/schemas")
     }
+    sourceSets {
+        getByName("test").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 kotlin {

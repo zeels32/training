@@ -1,5 +1,6 @@
 package com.azabost.quest.users.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.azabost.quest.users.repository.User
@@ -8,7 +9,9 @@ import com.azabost.quest.users.repository.User
 data class UserJdo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val firstName: String,
-    val lastName: String
+    val lastName: String,
+    @ColumnInfo(defaultValue = "0")
+    val isFavorite: Boolean = false
 )
 
 fun UserJdo.toUser(): User {
