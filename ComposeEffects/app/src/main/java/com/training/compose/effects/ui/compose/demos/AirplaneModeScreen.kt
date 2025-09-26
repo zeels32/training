@@ -1,4 +1,4 @@
-package com.training.compose.effects.ui.compose
+package com.training.compose.effects.ui.compose.demos
 
 import android.content.BroadcastReceiver
 import android.content.Context

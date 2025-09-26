@@ -7,36 +7,32 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.training.compose.effects.data.IRepository
-import com.training.compose.effects.data.RepositoryImpl
-import com.training.compose.effects.ui.compose.AirplaneModeScreen
-import com.training.compose.effects.ui.compose.Logger
-import com.training.compose.effects.ui.compose.NameList
-import com.training.compose.effects.ui.compose.SaveButton
-import com.training.compose.effects.ui.compose.SearchBar
-import com.training.compose.effects.ui.compose.SideEffectsDemoScreen
-import com.training.compose.effects.ui.compose.UserScreen
+import com.training.compose.effects.ui.compose.ComposeSplashScreen
+import com.training.compose.effects.ui.compose.HomeScreen
+import com.training.compose.effects.ui.compose.demos.AirplaneModeScreen
+import com.training.compose.effects.ui.compose.demos.Logger
+import com.training.compose.effects.ui.compose.demos.NameList
+import com.training.compose.effects.ui.compose.demos.SaveButton
+import com.training.compose.effects.ui.compose.demos.SearchBar
+import com.training.compose.effects.ui.compose.demos.UserScreen
 import com.training.compose.effects.ui.theme.ComposeEffectsTheme
 
 class MainActivity : ComponentActivity() {
-
-
-    private val repository: IRepository = RepositoryImpl()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,24 +40,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-
             ComposeEffectsTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    var showSplash by remember { mutableStateOf(true) }
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding),
-                        verticalArrangement = Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-//                        Demo(repository)
-                        SideEffectsDemoScreen(
-                            userId = "42",
-                            onTimeout = { Log.e("flow", "Timeout occurred") }
+                    if (showSplash) {
+                        ComposeSplashScreen(
+                            onTimeout = { showSplash = false }
                         )
+                    } else {
+                        HomeScreen()
                     }
                 }
             }

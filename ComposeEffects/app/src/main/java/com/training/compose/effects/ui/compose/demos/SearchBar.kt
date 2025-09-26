@@ -1,4 +1,4 @@
-package com.training.compose.effects.ui.compose
+package com.training.compose.effects.ui.compose.demos
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

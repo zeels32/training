@@ -1,4 +1,4 @@
-package com.training.compose.effects.ui.compose
+package com.training.compose.effects.ui.compose.demos
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
